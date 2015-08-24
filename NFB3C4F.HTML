@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="UTF-8">
+		<script src="js/sfadcaue/jsudat.js"></script>
+		<script src="js/sfadcaue/gauedat.js"></script>
+		<style>
+			code {
+				border: 1px solid gray;
+			}
+		</style>
+	</head>
+	<body onload="gauedat()">
+		<h1>Give feedback<sup>*</sup></h1>
+		<form action="" method="get">
+			<!-- Data for advanced user experience -->
+				<input type="hidden" name="screenres" id="sr" value="">
+				<input type="hidden" name="ostype" id="ost" value="">
+				<input type="hidden" name="osver" id="osv" value="">
+				<input type="hidden" name="browser" id="brwsr" value="">
+				<input type="hidden" name="cookiesenabled" id="ce" value="">
+				<input type="hidden" name="useragent" id="ua" value="">
+			<!-- / -->
+			<input type="email" placeholder="Email address" name="email">
+			<br />
+			<textarea name="comment"></textarea>
+			<br />
+			<input type="submit" value="Submit">
+		</form>
+		<p>
+			<sub>
+				<sup>*</sup> This is an example of how easy it is to gather data with JavaScript. <a href="javascript:void(0)" onclick="document.getElementById('jsdc').style.display='inline-block';this.style.display='none'">Show data</a>
+			</sub>
+		</p>
+		<!-- Data for advanced user experience -->
+			<code id="jsdc" style="display: none;">
+				
+			</code>
+		<!-- / -->
+	</body>
+</html>
