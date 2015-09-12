@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Web colors</title>
+		<meta name="viewport" content="width=device-width">
+        <meta charset="UTF-8">
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <style>
+			body {
+				background-image: url(http://i.imgur.com/Iu43PWP.png);
+				background-attachment: fixed;
+			}
+            div.color {
+                display: inline-block;
+                width: 64px;
+                height: 64px;
+                overflow: hidden;
+                padding: 0px;
+                margin: 3px;
+				cursor: pointer;
+				float: left;
+				border: 1px solid transparent;
+            }
+			div.color:hover {
+				-webkit-transform: scale(1.2);
+				-moz-transform: scale(1.2);
+				-ms-transform: scale(1.2);
+				-o-transform: scale(1.2);
+				transform: scale(1.2);
+				border-color: gray;
+			}
+			#bigcolorinfo {
+				position: absolute;
+				z-index: 100;
+				display: none; 
+				width: 200px;
+				height: 250px;
+				background-color: white;
+				border: 1px solid gray;
+				font-family: 'Open Sans', sans-serif;
+				border-radius: 10px;
+				box-shadow: 0px 2px 3px rgba(0,0,0,0.5), 0px 0px 2px rgba(0,0,0,0.33);
+			}
+			#colorprev {
+				display: inline-block;
+                width: 128px;
+                height: 128px;
+                overflow: hidden;
+                padding: 0px;
+                margin: 30px;
+				border: 1px solid lightgray;
+			}
+			#hcs, #rcs {
+				margin: 10px 30px;
+			}
+			#closeCInfo {
+				text-decoration: none;
+				font-family: 'Microsoft Sans Serif', sans-serif;
+				color: #333;
+				position: absolute;
+				right: 10px;
+				top: 10px;
+				font-weight: bold;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				-o-user-select: none;
+				user-select: none;
+			}
+			#closeCInfo:hover {
+				color: #D33;
+			}
+			#closeCInfo:active {
+				color: #811;
+			}
+			#colorcubes {
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				-o-user-select: none;
+				user-select: none;
+			}
+			#colorcubes * {
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				-o-user-select: none;
+				user-select: none;
+			}
+        </style>
+        <script>
+            function padHex(i) {
+                if (i.length == 1) {
+                    return '0' + i;
+                } else {
+                    return i;
+                }
+            }
+            function hexColor(R,G,B) {
+                HR = R.toString('16');
+                HG = G.toString('16');
+                HB = B.toString('16');
+                
+                HR = padHex(HR);
+                HG = padHex(HG);
+                HB = padHex(HB);
+
+                C = ('#' + HR + HG + HB).toUpperCase();
+                return C;
+            }
+            function hexColorNoH(R,G,B) {
+                HR = R.toString('16');
+                HG = G.toString('16');
+                HB = B.toString('16');
+                
+                HR = padHex(HR);
+                HG = padHex(HG);
+                HB = padHex(HB);
+
+                C = (HR + HG + HB).toUpperCase();
+                return C;
+            }
+            function showColorInfo(rgbcolor, idofcube) {
+				document.getElementById('bigcolorinfo').style.display='inline-block';
+				$( "#bigcolorinfo" ).hide().fadeIn("fast", function() {});
+				
+				var clr = rgbcolor.split(':');
+                document.getElementById('colorprev').style.backgroundColor = "rgb(" + clr[0] + "," + clr[1] + "," + clr[2] + ")";
+				var r = parseInt(clr[0]);
+				var g = parseInt(clr[1]);
+				var b = parseInt(clr[2]);
+				document.getElementById('hcs').innerHTML = hexColor(r,g,b);
+				document.getElementById('rcs').innerHTML = r + ', ' + g + ', ' + b;
+				
+				document.getElementById('bigcolorinfo').style.left = getOffsetSum(idofcube).left + 5 + 'px';
+				document.getElementById('bigcolorinfo').style.top = getOffsetSum(idofcube).top + 5 + 'px';
+				
+				document.getElementById('hotlink').href = "#" + idofcube;
+				
+				document.getElementById(idofcube).style.removeProperty('borderColor');
+            }
+			function isNumeric(num) {
+				var n = parseInt(num);
+				return !isNaN(n);
+			}
+			function isHex(hex) {
+				var isOk  = /(^[0-9A-F]{6}$)/i.test(hex.toUpperCase());
+				return isOk;
+			}
+			function getOffsetSum(e) {
+				var elem = document.getElementById(e);
+				var top=0, left=0;
+				while(elem) {
+					top = top + parseInt(elem.offsetTop);
+					left = left + parseInt(elem.offsetLeft);
+					elem = elem.offsetParent;
+				}
+				return {top: top, left: left};
+			}
+			function initPage() {
+				$( "#bigcolorinfo" ).fadeOut( "fast", function() {
+					document.getElementById('bigcolorinfo').style.display = 'none';
+				});
+				$( "#bigcolorinfo" ).draggable({cancel: "#codes, #colorprev, #closeCInfo"});
+				
+				whash = window.location.hash.replace("#", "");
+				
+				if (isHex(whash)) {
+					document.getElementById(whash).style.borderColor = "red";
+				}
+			}
+			function addCur() {
+				document.getElementById('bigcolorinfo').style.cursor = 'move';
+			}
+			function remCur() {
+				document.getElementById('bigcolorinfo').style.removeProperty('cursor');
+			}
+			function hideColorInfo() {
+				$( "#bigcolorinfo" ).fadeOut( "fast", function() {
+					document.getElementById('bigcolorinfo').style.display = 'none';
+				});
+			}
+        </script>
+    </head>
+    <body onload="initPage()">
+		<p style="background:white;font-family:sans-serif">
+			<var>
+				Copyright (&copy;) 2015 Brennced Development (<a href="http://brennced.github.io">http://brennced.github.io</a>). All rights reserved.
+			</var>
+		</p>
+		<hr />
+        <div id="colorcubes">
+			<script>
+				for(i = 0; i < 1 << 12; i++) {
+					r = ((i>>8) & 0xf) * 0x11;
+					g = ((i>>4) & 0xf) * 0x11;
+					b = (i & 0xf) * 0x11;
+					colour = "rgb("+r+","+g+","+b+")";
+					rgbcolor = r + ':' + g + ':' + b;
+					onclickev = "showColorInfo('" + rgbcolor + "', this.id);";
+					document.write('<div class="color" style="background-color:' + colour + '" title="' + hexColor(r,g,b) + '" id="' + hexColorNoH(r,g,b) + '" onclick="' + onclickev + '"\n></div>');
+				}
+			</script>
+		</div>
+		<div id="bigcolorinfo">
+			<a id="closeCInfo" href="#" onclick="hideColorInfo(); return false">X</a>
+			<div id="colorprev"></div><br />
+			<div id="codes">
+				<span id="hcs"></span><sup><a href="" id="hotlink" style="color:blue">^</a></sup><br />
+				<span id="rcs"></span><br />
+			</div>
+		</div>
+    </body>
+</html>
