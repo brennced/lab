@@ -167,9 +167,20 @@
 				whash = window.location.hash.replace("#", "");
 				
 				if (isHex(whash)) {
-					document.getElementById(whash).style.borderColor = "red";
+					showColorInfo(getrgbcolor(whash),whash);
 				}
 			}
+			function getrgbcolor(hexColor) {
+				R = hexToDec(hexColor.substring(0,2));
+				G = hexToDec(hexColor.substring(2,4));
+				B = hexToDec(hexColor.substring(4));
+				return R + ":" + G + ":" + B;
+			}
+			
+			function hexToDec(v) {
+				return (parseInt(v, 16));
+			}
+			
 			function addCur() {
 				document.getElementById('bigcolorinfo').style.cursor = 'move';
 			}
@@ -207,7 +218,7 @@
 			<a id="closeCInfo" href="#" onclick="hideColorInfo(); return false">X</a>
 			<div id="colorprev"></div><br />
 			<div id="codes">
-				<span id="hcs"></span><sup><a href="" id="hotlink" style="color:blue">^</a></sup><br />
+				<span id="hcs"></span><sup><a href="" id="hotlink" style="color:blue;text-decoration:none" title="Permalink">^</a></sup><br />
 				<span id="rcs"></span><br />
 			</div>
 		</div>
